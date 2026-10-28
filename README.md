@@ -13,14 +13,17 @@ Git Bash), et environ 6 Go de mémoire libre.
     ./setup/install.sh
 
 Le script télécharge la sauvegarde de `PachadataTraining` (626 Mo), vérifie sa somme
-SHA-256, démarre SQL Server 2025 Developer dans le conteneur `sqladmcourse` et restaure la
-base. Avec Podman : `COMPOSE="podman compose" ENGINE=podman ./setup/install.sh`.
+SHA-256, démarre SQL Server 2025 Developer dans le conteneur `sqladmcourse`, restaure la
+base et installe dans une base `DBA` la solution de maintenance d'Ola Hallengren (licence MIT,
+[ola.hallengren.com](https://ola.hallengren.com)), dont se servent les modules 11 à 13. Avec Podman : `COMPOSE="podman compose" ENGINE=podman ./setup/install.sh`.
 
 Le conteneur est limité à 4 Go de mémoire et 2 processeurs. L'Agent SQL Server est actif.
 
 Se connecter : SSMS ou un autre client sur `localhost,14433`, utilisateur `sa`, mot de passe
 `Course-2026!lab` (un mot de passe de labo, à ne jamais reprendre ailleurs ;
 `MSSQL_SA_PASSWORD` et `SQLPORT` le changent avant le premier démarrage).
+Le conteneur n'a qu'un certificat auto-signé, et SSMS chiffre la connexion par défaut depuis
+sa version 20 : cochez *Trust server certificate* dans la fenêtre de connexion.
 
 ## Le contenu
 
@@ -54,7 +57,9 @@ Le code est sous licence MIT ([`LICENSE`](LICENSE)).
 Lab, demos and exercises of the Docteur Atomic online course on SQL Server administration.
 Run `./setup/install.sh` (Docker or Podman with compose, curl, bash, about 6 GB of free
 memory): it downloads the `PachadataTraining` backup, checks its SHA-256, starts SQL Server
-2025 Developer (4 GB, 2 processors, Agent on) and restores the database. `demos/` holds the
+2025 Developer (4 GB, 2 processors, Agent on), restores the database and installs Ola
+Hallengren's Maintenance Solution in a `DBA` database. In SSMS, check *Trust server
+certificate*: the container only has a self-signed certificate. `demos/` holds the
 scripts shown in the videos and `exercises/` the exercise files, one folder per module; each
 module's `00-setup.sql` restores the database to the state the module expects. The code is
 released under the MIT license.
