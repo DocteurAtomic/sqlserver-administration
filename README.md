@@ -19,6 +19,14 @@ base et installe dans une base `DBA` la solution de maintenance d'Ola Hallengren
 
 Le conteneur est limité à 4 Go de mémoire et 2 processeurs. L'Agent SQL Server est actif.
 
+Un second conteneur, `sqladmcourse-mail`, fait tourner [Mailpit](https://mailpit.axllent.org),
+un serveur SMTP de test qui garde les messages au lieu de les envoyer : SQL Server lui écrit
+sur `mail:1025`, et les messages se lisent dans son interface web,
+[http://localhost:8025](http://localhost:8025) (`MAILPORT` change le port). Le module 10
+s'en sert pour Database Mail ; aucun message ne sort du labo. Sur un labo installé avant son
+ajout, `docker compose up -d` (ou `podman compose up -d`) le crée et recrée le conteneur
+SQL Server sur le réseau commun, sans toucher aux bases, qui sont dans le volume `sqldata`.
+
 Se connecter : SSMS ou un autre client sur `localhost,14433`, utilisateur `sa`, mot de passe
 `Course-2026!lab` (un mot de passe de labo, à ne jamais reprendre ailleurs ;
 `MSSQL_SA_PASSWORD` et `SQLPORT` le changent avant le premier démarrage).
@@ -58,7 +66,9 @@ Lab, demos and exercises of the Docteur Atomic online course on SQL Server admin
 Run `./setup/install.sh` (Docker or Podman with compose, curl, bash, about 6 GB of free
 memory): it downloads the `PachadataTraining` backup, checks its SHA-256, starts SQL Server
 2025 Developer (4 GB, 2 processors, Agent on), restores the database and installs Ola
-Hallengren's Maintenance Solution in a `DBA` database. In SSMS, check *Trust server
+Hallengren's Maintenance Solution in a `DBA` database. A second container,
+`sqladmcourse-mail`, runs Mailpit, a test SMTP server that keeps the messages: SQL Server
+sends to `mail:1025`, and the messages are read at http://localhost:8025 (module 10). In SSMS, check *Trust server
 certificate*: the container only has a self-signed certificate. `demos/` holds the
 scripts shown in the videos and `exercises/` the exercise files, one folder per module; each
 module's `00-setup.sql` restores the database to the state the module expects. The code is

@@ -1,6 +1,8 @@
 # Lab of the course: SQL Server 2025 Developer with PachadataTraining.
 # Start it and restore the database with: ./setup/install.sh
 # Memory and processors are bounded so the lab runs next to SSMS on an ordinary laptop.
+# The service mail is a test SMTP server (Mailpit, module 10): SQL Server sends to mail:1025
+# and the messages are read at http://localhost:8025. Nothing leaves the lab.
 services:
   sql:
     image: mcr.microsoft.com/mssql/server:2025-CU7-ubuntu-24.04
@@ -22,5 +24,18 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
+    networks:
+      - lab
+  mail:
+    image: docker.io/axllent/mailpit:v1.31.6
+    container_name: sqladmcourse-mail
+    environment:
+      MP_MAX_MESSAGES: "500"
+    ports:
+      - "127.0.0.1:${MAILPORT:-8025}:8025"
+    networks:
+      - lab
+networks:
+  lab:
 volumes:
   sqldata:
