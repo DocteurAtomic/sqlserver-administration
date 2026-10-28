@@ -69,7 +69,7 @@ docker exec sqladmcourse rm -rf /var/opt/mssql/backup/exercise_12   # à la tout
 ## Partie 4. Une sauvegarde chiffrée
 
 1. Créez dans `master` un certificat `ExerciseCert12`, avec une date d'expiration (et la clé
-   maîtresse de `master` si elle manque). Sauvegardez-le aussitôt, avec sa clé privée, dans le
+   principale de base de données de `master` si elle manque). Sauvegardez-le aussitôt, avec sa clé privée, dans le
    répertoire de l'exercice.
 2. Prenez une sauvegarde complète en copie seule, chiffrée en `AES_256` par ce certificat,
    avec les paramètres de `DatabaseBackup` faits pour cela (`@Encrypt`,
