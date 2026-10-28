@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Downloads the backup, checks it, starts the lab and restores the database.
+# Downloads the backup, checks it, starts the lab, restores the database and installs
+# Ola Hallengren's Maintenance Solution in the database DBA.
 # Usage: ./setup/install.sh
 #   With Podman: COMPOSE="podman compose" ENGINE=podman ./setup/install.sh
 set -euo pipefail
@@ -35,3 +36,5 @@ for f in PachadataTraining-2026-10.bak; do
     $engine exec -u 0 $c chown mssql /var/opt/mssql/backup/$f
 done
 $engine exec -i $c /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -b -I < setup/restore.sql
+# Ola Hallengren's Maintenance Solution in the database DBA, used from module 11 on.
+ENGINE=$engine ./setup/install-ola.sh
